@@ -43,6 +43,12 @@ const api = async (p, o) => {
   const r = await fetch(window.API_URL + p, o); const d = await r.json();
   if(!r.ok) throw new Error(d.error || 'Fehler'); return d;
 };
+const progress = async () => {
+  try{
+    const d = await api('/api/progress'), el = $('#prog');
+    if(el && d.persons) el.textContent = `Bisher sind ${d.total} Eindrücke für ${d.covered} von ${d.persons} Personen eingegangen.`;
+  }catch(e){}
+};
 const busy = t => app.innerHTML = `<p class="mute">${t}</p>`;
 
 async function assign(){
@@ -86,7 +92,9 @@ function menu(note){
     <p>Was möchtest du als Nächstes tun?</p>
     <button id="more">Noch einer Person einen Eindruck schenken</button>
     ${mem.length?'<button class="sec" id="edit">Einen abgeschickten Eindruck bearbeiten</button>':''}
+    <p class="mute" id="prog"></p>
   </div>`;
+  progress();
   $('#more').onclick = assign;
   $('#edit')?.addEventListener('click', list);
 }
@@ -102,7 +110,7 @@ function list(){
   });
 }
 function fail(e){ app.innerHTML = `<div class="card"><p class="err">${esc(e.message)}</p><button id="r">Nochmal versuchen</button></div>`; $('#r').onclick = ()=>mem.length?menu():start() }
-function start(){ app.innerHTML = `<button id="go">Person zugeteilt bekommen</button>` + (mem.length?'<button class="sec" id="m">Meine Eindrücke</button>':''); $('#go').onclick = assign; $('#m')?.addEventListener('click', menu) }
+function start(){ app.innerHTML = `<button id="go">Person zugeteilt bekommen</button>` + (mem.length?'<button class="sec" id="m">Meine Eindrücke</button>':'') + '<p class="mute" id="prog"></p>'; progress(); $('#go').onclick = assign; $('#m')?.addEventListener('click', menu) }
 start();
 </script>
 </body>
