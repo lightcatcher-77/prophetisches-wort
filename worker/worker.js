@@ -3,6 +3,14 @@
 const NOTION = "https://api.notion.com/v1";
 const MAX_LEN = 400;
 
+async function fetchRetry(url, opts, tries = 4) {
+  for (let i = 0; ; i++) {
+    const r = await fetch(url, opts);
+    if (r.status !== 429 || i >= tries) return r;
+    await new Promise((res) => setTimeout(res, 600 * (i + 1)));
+  }
+}
+
 export default {
   async fetch(req, env) {
     const cors = {
@@ -15,7 +23,7 @@ export default {
       new Response(JSON.stringify(data), { status, headers: { ...cors, "Content-Type": "application/json" } });
 
     const nf = (path, method = "GET", body) =>
-      fetch(NOTION + path, {
+      fetchRetry(NOTION + path, {
         method,
         headers: {
           Authorization: `Bearer ${env.NOTION_TOKEN}`,
@@ -54,10 +62,7 @@ export default {
           .filter((p) => plain(p.properties.Beschreibung.rich_text).trim());
         if (!persons.length) return json({ error: "Noch keine Personen freigegeben." }, 404);
         const counts = {};
-        await Promise.all(persons.map(async (p) => {
-          const d = await nf(`/blocks/${p.id}/children?page_size=100`);
-          counts[norm(p.id)] = d.results.filter((b) => b.type === "paragraph" && plain(b.paragraph.rich_text)).length;
-        }));
+        for (const p of persons) counts[norm(p.id)] = p.properties["Anzahl Eindrücke"]?.number || 0;
         let pool = persons.filter((p) => !exclude.includes(norm(p.id)));
         const allDone = pool.length === 0;
         if (allDone) pool = persons;
@@ -77,6 +82,10 @@ export default {
         const d = await nf(`/blocks/${b.personId}/children`, "PATCH", {
           children: [{ object: "block", type: "paragraph", paragraph: { rich_text: chunks(text) } }],
         });
+        // Anzahl der Eindrücke neu zählen und an der Person speichern (für faire Verteilung)
+        const kids = await nf(`/blocks/${b.personId}/children?page_size=100`);
+        const n2 = kids.results.filter((x) => x.type === "paragraph" && plain(x.paragraph.rich_text)).length;
+        await nf(`/pages/${b.personId}`, "PATCH", { properties: { "Anzahl Eindrücke": { number: n2 } } });
         return json({ id: d.results[0].id });
       }
 
