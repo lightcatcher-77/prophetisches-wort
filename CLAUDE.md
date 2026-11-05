@@ -78,7 +78,7 @@ Anonyme Eindrücke von Freunden für 22 Mitpatienten (Abschied Dienstag nächste
 - `TEXTE.md`: alle sichtbaren Texte. Daniel bearbeitet sie dort und gibt sie zurück, dann in `index.html` übernehmen (beide synchron halten).
 
 ## Festlegungen von Daniel
-- Titel: „Prophetische Ermutigungen für Daniels Mitpatienten“. Die Freunde wissen nur: Daniel ist in einer Klinik und macht das für seine Mitpatienten. Erklärung kurz halten.
+- Titel: „Prophetische Ermutigungen für Daniels Mitpatienten“. Die Freunde wissen: Daniel ist in einer psychiatrischen Klinik und macht das für seine Mitpatienten. Erklärung kurz halten.
 - Wortwahl-Hinweis: Einige Patienten sind Christen, andere nicht. Sprache soll für alle passen (ohne Kirchensprache, keine Diagnosen/Vorhersagen).
 - Eindrücke anonym; Besucher sehen nur Geschlecht und Altersrange (z. B. „Frau, 40-50 Jahre“). Maximal 400 Zeichen (Zettel).
 - Faire Verteilung: Keine Person bekommt ein zweites Wort, bevor alle aktiven Personen mindestens eins haben. Danach sind mehrere Worte pro Person erlaubt, Daniel wählt am Ende das passendste aus. Umgesetzt über „Anzahl Eindrücke“ (Worker zählt nach jedem Abschicken neu).
