@@ -85,6 +85,10 @@ Anonyme Eindrücke von Freunden für 22 Mitpatienten (Abschied Dienstag nächste
 - Nach dem Abschicken: weiterer Eindruck für eine andere Person oder eigenen Eindruck bearbeiten (Browser merkt sich die IDs).
 - Eigene Notizen nicht in den Seitenkörper der Personen schreiben (Absätze zählen als Eindrücke).
 
+## Git-Workflow
+- Kleine Änderungen (Texte, Fixes, Doku) direkt auf `main` committen und pushen, kein Branch, kein PR.
+- Nur neue größere Features in einem eigenen Branch entwickeln und per PR mergen.
+
 ## Betrieb
 - Deploy Worker: `cd worker && npx wrangler@4 deploy`, Secret `NOTION_TOKEN` per `wrangler secret put`. Tokens (Notion, Cloudflare) nie ins Repo schreiben.
 - `ALLOWED_ORIGIN` in `worker/wrangler.toml` = GitHub-Pages-Origin.
