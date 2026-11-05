@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ein Wort für dich</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--bg:#faf7f2;--card:#fff;--ink:#2b2622;--mute:#7a6f65;--acc:#8a6a3d;--line:#e7dfd3}
+@media(prefers-color-scheme:dark){:root{--bg:#1d1a17;--card:#27231f;--ink:#f1ebe2;--mute:#a89d90;--acc:#d2a967;--line:#3a342d}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 Georgia,'Times New Roman',serif;min-height:100vh;display:flex;justify-content:center;padding:24px 16px}
+main{width:100%;max-width:560px}
+h1{font-size:1.7rem;margin:.6em 0 .3em;font-weight:normal}
+p{margin:.6em 0}.mute{color:var(--mute);font-size:.95rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin:18px 0}
+.person{font-size:1.35rem;color:var(--acc)}
+textarea{width:100%;min-height:200px;padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit;resize:vertical}
+button{font:inherit;padding:12px 20px;border-radius:10px;border:1px solid var(--acc);background:var(--acc);color:#fff;cursor:pointer;margin:6px 6px 0 0}
+button.sec{background:transparent;color:var(--acc)}
+button:disabled{opacity:.5}
+.err{color:#b3392f}.hidden{display:none}
+</style>
+</head>
+<body>
+<main>
+  <h1>Ein Wort für dich ✨</h1>
+  <p class="mute">Du bekommst gleich eine anonyme Person zugeteilt. Nimm dir einen Moment, werde still und schreibe auf, was dir für diese Person aufs Herz kommt – ein Bild, ein Vers, ein Gedanke, ein Zuspruch.</p>
+  <div id="app"></div>
+</main>
+<script src="config.js"></script>
+<script>
+const $ = s => document.querySelector(s), app = $('#app');
+const store = {
+  get(){ try{ return JSON.parse(localStorage.getItem('pw')||'[]') }catch(e){ return [] } },
+  set(v){ try{ localStorage.setItem('pw', JSON.stringify(v)) }catch(e){} }
+};
+let mem = store.get(); // [{id, personId, beschreibung}]
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const api = async (p, o) => {
+  const r = await fetch(window.API_URL + p, o); const d = await r.json();
+  if(!r.ok) throw new Error(d.error || 'Fehler'); return d;
+};
+const busy = t => app.innerHTML = `<p class="mute">${t}</p>`;
+
+async function assign(){
+  busy('Person wird zugeteilt …');
+  try{
+    const d = await api('/api/assign?exclude=' + mem.map(m=>m.personId).join(','));
+    write({personId:d.personId, beschreibung:d.beschreibung}, '', null, d.allDone);
+  }catch(e){ fail(e) }
+}
+function write(p, text, editId, allDone){
+  app.innerHTML = `<div class="card">
+    ${allDone?'<p class="mute">Du hast schon für alle Personen etwas geschrieben – hier eine weitere Runde.</p>':''}
+    <p class="mute">Dein Eindruck gilt für:</p>
+    <p class="person">${esc(p.beschreibung)}</p>
+    <textarea id="t" maxlength="1800" placeholder="Was kommt dir für diese Person in den Sinn?">${esc(text)}</textarea>
+    <p id="msg" class="err"></p>
+    <button id="send">${editId?'Änderung speichern':'Abschicken'}</button>
+    ${editId?'<button class="sec" id="back">Abbrechen</button>':''}
+  </div>`;
+  $('#back')?.addEventListener('click', menu);
+  $('#send').onclick = async () => {
+    const t = $('#t').value.trim();
+    if(!t){ $('#msg').textContent='Bitte schreibe zuerst etwas auf.'; return }
+    $('#send').disabled = true;
+    try{
+      if(editId) await api('/api/impression/'+editId, {method:'PATCH', headers:{'Content-Type':'application/json'}, body:JSON.stringify({text:t})});
+      else{
+        const d = await api('/api/impression', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({personId:p.personId, text:t})});
+        mem.push({id:d.id, personId:p.personId, beschreibung:p.beschreibung}); store.set(mem);
+      }
+      menu(editId?'Änderung gespeichert.':'Danke, dein Eindruck wurde gesendet. 🙏');
+    }catch(e){ $('#msg').textContent = e.message; $('#send').disabled=false }
+  };
+}
+function menu(note){
+  app.innerHTML = `<div class="card">
+    ${typeof note==='string'?`<p class="person">${note}</p>`:''}
+    <p>Was möchtest du als Nächstes tun?</p>
+    <button id="more">Noch einer Person einen Eindruck schenken</button>
+    ${mem.length?'<button class="sec" id="edit">Einen abgeschickten Eindruck bearbeiten</button>':''}
+  </div>`;
+  $('#more').onclick = assign;
+  $('#edit')?.addEventListener('click', list);
+}
+function list(){
+  app.innerHTML = `<div class="card"><p>Welchen Eindruck möchtest du bearbeiten?</p>` +
+    mem.map((m,i)=>`<button class="sec" data-i="${i}">${i+1}. ${esc(m.beschreibung)}</button>`).join('<br>') +
+    `<p><button class="sec" id="back">Zurück</button></p></div>`;
+  $('#back').onclick = menu;
+  app.querySelectorAll('[data-i]').forEach(b => b.onclick = async () => {
+    const m = mem[b.dataset.i]; busy('Lade …');
+    try{ const d = await api('/api/impression/'+m.id); write({personId:m.personId, beschreibung:m.beschreibung}, d.text, m.id) }
+    catch(e){ fail(e) }
+  });
+}
+function fail(e){ app.innerHTML = `<div class="card"><p class="err">${esc(e.message)}</p><button id="r">Nochmal versuchen</button></div>`; $('#r').onclick = ()=>mem.length?menu():start() }
+function start(){ app.innerHTML = `<button id="go">Person zugeteilt bekommen</button>` + (mem.length?'<button class="sec" id="m">Meine Eindrücke</button>':''); $('#go').onclick = assign; $('#m')?.addEventListener('click', menu) }
+start();
+</script>
+</body>
+</html>
