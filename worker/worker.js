@@ -48,6 +48,8 @@ export default {
     };
     const plain = (rt) => (rt || []).map((t) => t.plain_text).join("");
     const clean = (s) => String(s || "").trim().slice(0, MAX_LEN);
+    // Anzeigetext aus „Geschlecht“ (Auswahl) und „Altersrange“ (Text), z. B. „Frau, 55–65“
+    const beschr = (pr) => [pr.Geschlecht?.select?.name, plain(pr.Altersrange?.rich_text).trim()].filter(Boolean).join(", ");
     const norm = (id) => id.replace(/-/g, "");
 
     try {
@@ -58,7 +60,7 @@ export default {
       if (path === "/api/assign" && req.method === "GET") {
         const exclude = (url.searchParams.get("exclude") || "").split(",").filter(Boolean).map(norm);
         const persons = (await queryAll(env.PERSONS_DB, { property: "Aktiv", checkbox: { equals: true } }))
-          .filter((p) => plain(p.properties.Beschreibung.rich_text).trim());
+          .filter((p) => p.properties.Geschlecht?.select && plain(p.properties.Altersrange?.rich_text).trim());
         if (!persons.length) return json({ error: "Noch keine Personen freigegeben." }, 404);
         const counts = {};
         for (const p of persons) counts[norm(p.id)] = p.properties["Anzahl Eindrücke"]?.number || 0;
@@ -68,7 +70,7 @@ export default {
         const min = Math.min(...pool.map((p) => counts[norm(p.id)]));
         const low = pool.filter((p) => counts[norm(p.id)] === min);
         const p = low[Math.floor(Math.random() * low.length)];
-        return json({ personId: p.id, beschreibung: plain(p.properties.Beschreibung.rich_text), allDone });
+        return json({ personId: p.id, beschreibung: beschr(p.properties), allDone });
       }
 
       // Neuer Eindruck: wird als Absatz an die Personen-Seite angehängt
@@ -103,7 +105,7 @@ export default {
           await nf(`/blocks/${m[1]}`, "PATCH", { paragraph: { rich_text: [{ type: "text", text: { content: text } }] } });
           return json({ ok: true });
         }
-        return json({ id: block.id, text: plain(block.paragraph.rich_text), beschreibung: plain(person.properties.Beschreibung.rich_text) });
+        return json({ id: block.id, text: plain(block.paragraph.rich_text), beschreibung: beschr(person.properties) });
       }
       return json({ error: "Nicht gefunden." }, 404);
     } catch (e) {
