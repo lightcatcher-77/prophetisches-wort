@@ -5,4 +5,4 @@ compatibility_date = "2024-11-01"
 [vars]
 PERSONS_DB = "c40668cf-19bb-4539-8303-089dde114c29"
 # Nach dem Deployment auf deine GitHub-Pages-Adresse setzen, z. B. "https://DEINNAME.github.io"
-ALLOWED_ORIGIN = "*"
+ALLOWED_ORIGIN = "https://lightcatcher-77.github.io"
