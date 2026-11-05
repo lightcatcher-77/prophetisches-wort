@@ -76,10 +76,10 @@ export default {
         return json({ personId: p.id, beschreibung: beschr(p.properties), allDone });
       }
 
-      // Fortschritt: alle Eindrücke, und für wie viele Personen schon mindestens einer da ist
+      // Fortschritt: bei wie vielen Personen ist schon mindestens ein Eindruck da
       if (path === "/api/progress" && req.method === "GET") {
         const nums = (await freigegeben()).map((p) => p.properties["Anzahl Eindrücke"]?.number || 0);
-        return json({ total: nums.reduce((a, b) => a + b, 0), covered: nums.filter((n) => n > 0).length, persons: nums.length });
+        return json({ covered: nums.filter((n) => n > 0).length, persons: nums.length });
       }
 
       // Neuer Eindruck: wird als Absatz an die Personen-Seite angehängt

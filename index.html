@@ -46,7 +46,9 @@ const api = async (p, o) => {
 const progress = async () => {
   try{
     const d = await api('/api/progress'), el = $('#prog');
-    if(el && d.persons) el.textContent = `Bisher sind ${d.total} Eindrücke für ${d.covered} von ${d.persons} Personen eingegangen.`;
+    if(el && d.persons) el.textContent = d.covered >= d.persons
+      ? `Alle ${d.persons} Personen haben schon einen Eindruck bekommen. Wenn du noch jemandem etwas auf dem Herzen hast, kannst du gerne einen weiteren hinzufügen.`
+      : `Bisher haben ${d.covered} von ${d.persons} Personen einen Eindruck bekommen.`;
   }catch(e){}
 };
 const busy = t => app.innerHTML = `<p class="mute">${t}</p>`;
