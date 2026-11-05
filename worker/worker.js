@@ -47,7 +47,6 @@ export default {
       return out;
     };
     const plain = (rt) => (rt || []).map((t) => t.plain_text).join("");
-    const chunks = (s) => (s.match(/[\s\S]{1,2000}/g) || []).map((c) => ({ type: "text", text: { content: c } }));
     const clean = (s) => String(s || "").trim().slice(0, MAX_LEN);
     const norm = (id) => id.replace(/-/g, "");
 
@@ -77,10 +76,11 @@ export default {
         const b = await req.json();
         const text = clean(b.text);
         if (!text) return json({ error: "Bitte schreibe einen Eindruck." }, 400);
+        if (!/^[0-9a-f-]{32,36}$/.test(b.personId)) return json({ error: "Ungültige Person." }, 400);
         const person = await nf(`/pages/${b.personId}`);
         if (norm(person.parent.database_id || "") !== norm(env.PERSONS_DB)) return json({ error: "Ungültige Person." }, 400);
         const d = await nf(`/blocks/${b.personId}/children`, "PATCH", {
-          children: [{ object: "block", type: "paragraph", paragraph: { rich_text: chunks(text) } }],
+          children: [{ object: "block", type: "paragraph", paragraph: { rich_text: [{ type: "text", text: { content: text } }] } }],
         });
         // Anzahl der Eindrücke neu zählen und an der Person speichern (für faire Verteilung)
         const kids = await nf(`/blocks/${b.personId}/children?page_size=100`);
@@ -100,7 +100,7 @@ export default {
         if (req.method === "PATCH") {
           const text = clean((await req.json()).text);
           if (!text) return json({ error: "Bitte schreibe einen Eindruck." }, 400);
-          await nf(`/blocks/${m[1]}`, "PATCH", { paragraph: { rich_text: chunks(text) } });
+          await nf(`/blocks/${m[1]}`, "PATCH", { paragraph: { rich_text: [{ type: "text", text: { content: text } }] } });
           return json({ ok: true });
         }
         return json({ id: block.id, text: plain(block.paragraph.rich_text), beschreibung: plain(person.properties.Beschreibung.rich_text) });
