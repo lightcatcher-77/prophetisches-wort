@@ -63,3 +63,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
+## Projekt-spezifisch
+
+- Pull Requests, die Claude in diesem Repo auf Wunsch des Nutzers anlegt, darf Claude selbst nach `main` mergen (vom Nutzer ausdrücklich erlaubt). Ein PR wird nur angelegt, wenn der Nutzer darum bittet.
