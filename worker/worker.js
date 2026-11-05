@@ -50,6 +50,10 @@ export default {
     const clean = (s) => String(s || "").trim().slice(0, MAX_LEN);
     // Anzeigetext aus „Geschlecht“ (Auswahl) und „Altersrange“ (Text), z. B. „Frau, 55–65 Jahre“
     const beschr = (pr) => [pr.Geschlecht?.select?.name, plain(pr.Altersrange?.rich_text).trim() && plain(pr.Altersrange.rich_text).trim() + " Jahre"].filter(Boolean).join(", ");
+    // Aktive Personen mit Geschlecht und Altersrange
+    const freigegeben = async () =>
+      (await queryAll(env.PERSONS_DB, { property: "Aktiv", checkbox: { equals: true } }))
+        .filter((p) => p.properties.Geschlecht?.select && plain(p.properties.Altersrange?.rich_text).trim());
     const norm = (id) => id.replace(/-/g, "");
 
     try {
@@ -59,8 +63,7 @@ export default {
       // Zufällige Person: bevorzugt die mit den wenigsten Eindrücken
       if (path === "/api/assign" && req.method === "GET") {
         const exclude = (url.searchParams.get("exclude") || "").split(",").filter(Boolean).map(norm);
-        const persons = (await queryAll(env.PERSONS_DB, { property: "Aktiv", checkbox: { equals: true } }))
-          .filter((p) => p.properties.Geschlecht?.select && plain(p.properties.Altersrange?.rich_text).trim());
+        const persons = await freigegeben();
         if (!persons.length) return json({ error: "Noch keine Personen freigegeben." }, 404);
         const counts = {};
         for (const p of persons) counts[norm(p.id)] = p.properties["Anzahl Eindrücke"]?.number || 0;
@@ -71,6 +74,12 @@ export default {
         const low = pool.filter((p) => counts[norm(p.id)] === min);
         const p = low[Math.floor(Math.random() * low.length)];
         return json({ personId: p.id, beschreibung: beschr(p.properties), allDone });
+      }
+
+      // Fortschritt: alle Eindrücke, und für wie viele Personen schon mindestens einer da ist
+      if (path === "/api/progress" && req.method === "GET") {
+        const nums = (await freigegeben()).map((p) => p.properties["Anzahl Eindrücke"]?.number || 0);
+        return json({ total: nums.reduce((a, b) => a + b, 0), covered: nums.filter((n) => n > 0).length, persons: nums.length });
       }
 
       // Neuer Eindruck: wird als Absatz an die Personen-Seite angehängt
