@@ -74,13 +74,13 @@ Anonyme Eindrücke von Freunden für 22 Mitpatienten (Abschied Dienstag nächste
 ## Aufbau
 - `index.html` + `config.js`: statische Seite auf GitHub Pages (https://lightcatcher-77.github.io/prophetisches-wort/).
 - `worker/worker.js`: Cloudflare Worker (https://prophetisches-wort.daker1.workers.dev), hält den Notion-Token und schreibt in Notion.
-- Notion: eine Datenbank „Patienten – Prophetische Worte“ (22 Seiten „Person 01–22“, Felder Beschreibung, Aktiv, Anzahl Eindrücke). Eindrücke stehen als Absätze im Seitenkörper der jeweiligen Person. Keine zweite Datenbank.
+- Notion: eine Datenbank „Patienten – Prophetische Worte“ (22 Seiten „Person 01–22“, Felder Geschlecht, Altersrange, Aktiv, Anzahl Eindrücke). Eindrücke stehen als Absätze im Seitenkörper der jeweiligen Person. Keine zweite Datenbank.
 - `TEXTE.md`: alle sichtbaren Texte. Daniel bearbeitet sie dort und gibt sie zurück, dann in `index.html` übernehmen (beide synchron halten).
 
 ## Festlegungen von Daniel
 - Titel: „Prophetische Worte für Daniels Mitpatienten“. Die Freunde wissen nur: Daniel ist in einer Klinik und macht das für seine Mitpatienten. Erklärung kurz halten.
 - Wortwahl-Hinweis: Einige Patienten sind Christen, andere nicht. Sprache soll für alle passen (ohne Kirchensprache, keine Diagnosen/Vorhersagen).
-- Eindrücke anonym; Besucher sehen nur Geschlecht/ungefähres Alter (Beschreibung). Maximal 400 Zeichen (Zettel).
+- Eindrücke anonym; Besucher sehen nur Geschlecht und Altersrange (z. B. „Frau, 40-50 Jahre“). Maximal 400 Zeichen (Zettel).
 - Faire Verteilung: Keine Person bekommt ein zweites Wort, bevor alle aktiven Personen mindestens eins haben. Danach sind mehrere Worte pro Person erlaubt, Daniel wählt am Ende das passendste aus. Umgesetzt über „Anzahl Eindrücke“ (Worker zählt nach jedem Abschicken neu).
 - Nach dem Abschicken: weiterer Eindruck für eine andere Person oder eigenen Eindruck bearbeiten (Browser merkt sich die IDs).
 - Eigene Notizen nicht in den Seitenkörper der Personen schreiben (Absätze zählen als Eindrücke).
@@ -89,4 +89,4 @@ Anonyme Eindrücke von Freunden für 22 Mitpatienten (Abschied Dienstag nächste
 - Deploy Worker: `cd worker && npx wrangler@4 deploy`, Secret `NOTION_TOKEN` per `wrangler secret put`. Tokens (Notion, Cloudflare) nie ins Repo schreiben.
 - `ALLOWED_ORIGIN` in `worker/wrangler.toml` = GitHub-Pages-Origin.
 - Repo ist für Pages öffentlich; nach der Aktion wieder privat stellen.
-- Tests gegen Notion: Testdaten (Aktiv, Beschreibung, Absätze, Zähler) danach immer wieder zurücksetzen.
+- Tests gegen Notion: Testdaten (Aktiv, Geschlecht, Altersrange, Absätze, Zähler) danach immer wieder zurücksetzen.

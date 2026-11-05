@@ -7,4 +7,4 @@ Statische Seite (GitHub Pages) + kleiner Cloudflare Worker, der Eindrücke in ei
 2. **Worker**: `cd worker && npm i -g wrangler && wrangler login && wrangler secret put NOTION_TOKEN && wrangler deploy`
 3. Worker-URL in `config.js` eintragen, `ALLOWED_ORIGIN` in `worker/wrangler.toml` auf die Pages-URL setzen.
 4. GitHub → Settings → Pages → Branch `main`, Ordner `/ (root)`.
-5. In Notion bei jeder Person „Beschreibung“ (z. B. *Frau, ca. 60*) eintragen und „Aktiv“ anhaken.
+5. In Notion bei jeder Person „Geschlecht“ (Auswahl) und „Altersrange“ (Text, z. B. *55–65*) eintragen und „Aktiv“ anhaken.
