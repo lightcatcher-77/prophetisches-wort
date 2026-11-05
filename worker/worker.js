@@ -48,8 +48,8 @@ export default {
     };
     const plain = (rt) => (rt || []).map((t) => t.plain_text).join("");
     const clean = (s) => String(s || "").trim().slice(0, MAX_LEN);
-    // Anzeigetext aus „Geschlecht“ (Auswahl) und „Altersrange“ (Text), z. B. „Frau, 55–65“
-    const beschr = (pr) => [pr.Geschlecht?.select?.name, plain(pr.Altersrange?.rich_text).trim()].filter(Boolean).join(", ");
+    // Anzeigetext aus „Geschlecht“ (Auswahl) und „Altersrange“ (Text), z. B. „Frau, 55–65 Jahre“
+    const beschr = (pr) => [pr.Geschlecht?.select?.name, plain(pr.Altersrange?.rich_text).trim() && plain(pr.Altersrange.rich_text).trim() + " Jahre"].filter(Boolean).join(", ");
     const norm = (id) => id.replace(/-/g, "");
 
     try {
