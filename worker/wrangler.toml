@@ -4,6 +4,5 @@ compatibility_date = "2024-11-01"
 
 [vars]
 PERSONS_DB = "c40668cf-19bb-4539-8303-089dde114c29"
-IMPRESSIONS_DB = "5776bd99-3eb3-4f07-8790-9ffb5470aa8c"
 # Nach dem Deployment auf deine GitHub-Pages-Adresse setzen, z. B. "https://DEINNAME.github.io"
 ALLOWED_ORIGIN = "*"
