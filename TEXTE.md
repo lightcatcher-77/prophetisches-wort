@@ -14,6 +14,9 @@ Du bekommst zufällig eine anonyme Person zugeteilt (du siehst nur Geschlecht un
 ## Hinweis zur Wortwahl
 Einige meiner Mitpatienten sind Christen, andere nicht. Bitte formuliere so, dass sich jeder angesprochen fühlen kann: ermutigend und einfach und nicht mit übergeistlicher Sprache. Ich werde es bei meinen Mitpatienten als "Ermutigende Worte" von Freunden von mir einordnen, also eher nicht "Ich habe ein Bild von...", sondern eher in die Richtung "Ich will dich daran erinnern, dass du Barmherzig zu dir selbst sein darfst".
 
+## Bitte um Frist (fett)
+**Bitte füge deine Worte bis Sonntagabend hinzu.**
+
 ## Beschriftungen
 - Startknopf: Person zugeteilt bekommen
 - Über dem Textfeld: Dein Eindruck gilt für:
