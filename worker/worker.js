@@ -1,7 +1,7 @@
 // Cloudflare Worker: vermittelt zwischen der GitHub-Page und Notion.
 // Der Notion-Token bleibt hier geheim (Secret NOTION_TOKEN) und ist nie im Browser sichtbar.
 const NOTION = "https://api.notion.com/v1";
-const MAX_LEN = 1800;
+const MAX_LEN = 400;
 
 export default {
   async fetch(req, env) {

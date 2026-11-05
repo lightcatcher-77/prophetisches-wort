@@ -55,11 +55,14 @@ function write(p, text, editId, allDone){
     ${allDone?'<p class="mute">Du hast schon für alle Personen etwas geschrieben – hier eine weitere Runde.</p>':''}
     <p class="mute">Dein Eindruck gilt für:</p>
     <p class="person">${esc(p.beschreibung)}</p>
-    <textarea id="t" maxlength="1800" placeholder="Was kommt dir für diese Person in den Sinn?">${esc(text)}</textarea>
+    <textarea id="t" maxlength="400" placeholder="Was kommt dir für diese Person in den Sinn?">${esc(text)}</textarea>
+    <p class="mute" id="cnt" style="text-align:right">0 / 400 Zeichen – passt auf einen kleinen Zettel</p>
     <p id="msg" class="err"></p>
     <button id="send">${editId?'Änderung speichern':'Abschicken'}</button>
     ${editId?'<button class="sec" id="back">Abbrechen</button>':''}
   </div>`;
+  const upd=()=>$('#cnt').textContent=$('#t').value.length+' / 400 Zeichen – passt auf einen kleinen Zettel';
+  $('#t').addEventListener('input',upd); upd();
   $('#back')?.addEventListener('click', menu);
   $('#send').onclick = async () => {
     const t = $('#t').value.trim();
