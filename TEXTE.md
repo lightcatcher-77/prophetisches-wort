@@ -1,28 +1,25 @@
 # Texte der Webseite
 
 Bearbeite die Texte hier direkt und gib mir die Datei zurück, dann übernehme ich sie in die Seite.
-(Die Zeichengrenze pro Eindruck steht aktuell bei 400.)
+(Die Sammlung ist abgeschlossen, die Seite ist jetzt eine Dankesseite.)
 
-## Titel
-Prophetische Ermutigungen für Daniels Mitpatienten
+## Titel (Browser-Tab)
+Danke für deine Worte
 
-## Einleitung
-Ich bin gerade in einer psychiatrischen Klinik und möchte meinen Mitpatienten zum Abschied am Dienstag ein persönliches prophetisches Wort mitgeben. Dafür brauche ich deine Hilfe.
+## Himmel
+- Kleine Zeile oben: Für alle, die mitgeschrieben haben
+- Große Überschrift: Danke
+- Unterzeile: Deine Worte sind angekommen.
+- Hinweis unten: Tippe in den Himmel und lass ein Licht steigen.
 
-Du bekommst zufällig eine anonyme Person zugeteilt (du siehst nur Geschlecht und ungefähres Alter). Gehe einfach kurz ins Gebet für die Person und schreibe auf, was dir für sie aufs Herz kommt: Ein Bild, ein Vers, ein Gedanke, ein ermutigender Satz. Du bleibst dabei anonym.
+## Zettel
+Du hast für einen Menschen geschrieben, den du nie gesehen hast.
 
-## Hinweis zur Wortwahl
-Einige meiner Mitpatienten sind Christen, andere nicht, und manche sind bei Glaubensthemen sensibel. Bitte formuliere so, dass sich jeder angesprochen fühlen kann: ermutigend und einfach, nicht mit übergeistlicher Sprache. Wenn du einen ganz klaren, spezifischen Eindruck hast, dass es bei dieser Person genau so dran ist, kann es auch gerne evangelistisch sein, aber sei da einfach sensibel. Deine Ermutigung darf gerne auf Gott zeigen, ich erkläre meinen Mitpatienten, dass die Worte aus Gebeten entstanden sind. Ich werde es als "Ermutigende Worte" von Freunden von mir einordnen, also eher nicht "Ich habe ein Bild von...", sondern eher in die Richtung "Ich will dich daran erinnern, dass du barmherzig zu dir selbst sein darfst".
+Ich habe die Ermutigungen an meine Mitpatienten weitergegeben. Einige von ihnen waren sehr berührt von dem, was sie gelesen haben.
 
-## Bitte um Frist (fett)
-**Bitte füge deine Worte bis Ende des Tages heute hinzu.**
+Danke, dass du dir Zeit genommen, für eine fremde Person gebetet und aufgeschrieben hast, was dir für sie aufs Herz kam.
 
-## Beschriftungen
-- Startknopf: Person zugeteilt bekommen
-- Über dem Textfeld: Dein Eindruck gilt für:
-- Platzhalter im Textfeld: Was kommt dir für diese Person in den Sinn?
-- Zähler: 0 / 400 Zeichen
-- Senden-Knopf: Abschicken
-- Nach dem Senden: Danke, dein Eindruck wurde gesendet. 🙏
-- Weitere Person: Noch einer Person einen Eindruck schenken
-- Bearbeiten: Einen abgeschickten Eindruck bearbeiten
+Daniel
+
+## Abschluss
+Die Sammlung ist abgeschlossen. Es werden keine weiteren Worte mehr gebraucht.
