@@ -63,7 +63,10 @@ export default {
       // Zufällige Person: bevorzugt die mit den wenigsten Eindrücken
       if (path === "/api/assign" && req.method === "GET") {
         const exclude = (url.searchParams.get("exclude") || "").split(",").filter(Boolean).map(norm);
-        const persons = await freigegeben();
+        let persons = await freigegeben();
+        // Optional: eine Person (z. B. den Seitenbetreiber) anhand ihres Namens ausschließen
+        const ohne = (url.searchParams.get("ohne") || "").trim().toLowerCase();
+        if (ohne) persons = persons.filter((p) => plain(Object.values(p.properties).find((x) => x.type === "title")?.title).trim().toLowerCase() !== ohne);
         if (!persons.length) return json({ error: "Noch keine Personen freigegeben." }, 404);
         const counts = {};
         for (const p of persons) counts[norm(p.id)] = p.properties["Anzahl Eindrücke"]?.number || 0;
