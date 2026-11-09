@@ -72,7 +72,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 Anonyme Eindrücke von Freunden für 22 Mitpatienten (Abschied Dienstag nächster Woche). Antworten und Texte auf Deutsch.
 
 ## Aufbau
-- `index.html` + `config.js`: statische Seite auf GitHub Pages (https://lightcatcher-77.github.io/prophetisches-wort/).
+- `index.html`: statische Seite auf GitHub Pages (https://lightcatcher-77.github.io/prophetisches-wort/). Seit Abschluss der Sammlung eine reine Dankesseite ohne Formular; `config.js` und der Worker werden von ihr nicht mehr aufgerufen.
 - `worker/worker.js`: Cloudflare Worker (https://prophetisches-wort.daker1.workers.dev), hält den Notion-Token und schreibt in Notion.
 - Notion: eine Datenbank „Patienten – Prophetische Worte“ (22 Seiten, eine pro Person mit Namen und Nr 1–22, Felder Geschlecht, Altersrange, Aktiv, Anzahl Eindrücke). Eindrücke stehen als Absätze im Seitenkörper der jeweiligen Person. Keine zweite Datenbank.
 - `TEXTE.md`: alle sichtbaren Texte. Daniel bearbeitet sie dort und gibt sie zurück, dann in `index.html` übernehmen (beide synchron halten).
