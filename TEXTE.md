@@ -6,17 +6,18 @@ Bearbeite die Texte hier direkt und gib mir die Datei zurück, dann übernehme i
 ## Titel (Browser-Tab)
 Danke für deine Worte
 
-## Himmel
+## Anfang
 - Kleine Zeile oben: Für alle, die mitgeschrieben haben
 - Große Überschrift: Danke
 - Unterzeile: Deine Worte sind angekommen.
-- Hinweis unten: Tippe in den Himmel und lass ein Licht steigen.
+- Hinweis unten: Scrolle langsam weiter
 
-## Zettel
-Du hast für einen Menschen geschrieben, den du nie gesehen hast.
+## Sätze, die beim Scrollen nacheinander erscheinen
+1. Du hast für einen Menschen geschrieben, den du nie gesehen hast.
+2. Ich habe die Ermutigungen an meine Mitpatienten weitergegeben.
+3. Einige von ihnen waren sehr berührt von dem, was sie gelesen haben. (dabei sammeln sich die Lichter zu einem Herz)
 
-Ich habe die Ermutigungen an meine Mitpatienten weitergegeben. Einige von ihnen waren sehr berührt von dem, was sie gelesen haben.
-
+## Zettel am Ende
 Danke, dass du dir Zeit genommen, für eine fremde Person gebetet und aufgeschrieben hast, was dir für sie aufs Herz kam.
 
 Daniel

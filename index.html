@@ -5,20 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Danke für deine Worte</title>
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#131a3c">
+<meta name="theme-color" content="#0d1230">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Fraunces:ital,wght@0,800;1,500&family=Nunito+Sans:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#faf7f2;--card:#fffdf8;--ink:#2b2622;--mute:#7a6f65;--acc:#8a6a3d;--line:#e7dfd3;--tape:rgba(214,178,110,.55);--shadow:rgba(60,40,20,.14)}
-@media(prefers-color-scheme:dark){:root{--bg:#1d1a17;--card:#2a2520;--ink:#f1ebe2;--mute:#a89d90;--acc:#d2a967;--line:#3a342d;--tape:rgba(210,169,103,.4);--shadow:rgba(0,0,0,.45)}}
+:root{--bg:#faf7f2;--card:#fffdf8;--ink:#2b2622;--acc:#8a6a3d;--line:#e7dfd3;--tape:rgba(214,178,110,.6);--shadow:rgba(40,25,30,.3)}
+@media(prefers-color-scheme:dark){:root{--bg:#1d1a17;--card:#2a2520;--ink:#f1ebe2;--acc:#d2a967;--line:#3a342d;--tape:rgba(210,169,103,.45);--shadow:rgba(0,0,0,.5)}}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 'Nunito Sans',system-ui,sans-serif;overflow-x:hidden}
+body{margin:0;background:#0d1230;color:#fff6e6;font:17px/1.6 'Nunito Sans',system-ui,sans-serif}
 
-/* Himmel */
-.sky{position:relative;height:100vh;height:100svh;min-height:520px;overflow:hidden;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;
+/* Die Seite scrollt durch .track, der Himmel bleibt dabei stehen und baut sich auf */
+.track{height:620vh}
+.sky{position:sticky;top:0;height:100vh;height:100dvh;min-height:520px;overflow:hidden;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;
   background:linear-gradient(180deg,#0d1230 0%,#1b2152 34%,#4a2f6b 60%,#a8506a 80%,#f0a868 96%)}
+.sky>*{position:absolute}
+.dawn{inset:0;opacity:0;background:linear-gradient(180deg,#33447f 0%,#7b6aa3 34%,#d98a8f 62%,#f6bd84 82%,#ffe2a8 100%)}
+.stars,.amb,.heart{inset:0}
 .star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;animation:twinkle var(--d) ease-in-out var(--t) infinite}
 @keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.9}}
 
@@ -31,87 +34,153 @@ body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 'Nunito Sans',
 .lantern i::after{content:"";position:absolute;left:28%;right:28%;bottom:-3px;height:4px;border-radius:2px;background:#7a3a1c}
 @keyframes rise{from{transform:translateY(40px) scale(var(--s))}to{transform:translateY(calc(-100vh - var(--y,0px) - 140px)) scale(var(--s))}}
 @keyframes sway{from{transform:translateX(-14px) rotate(-5deg)}to{transform:translateX(14px) rotate(5deg)}}
+.heart .lantern{left:-11px;top:-15px;animation:none;opacity:0}
+.heart .lantern i{animation-name:sway-s}
+@keyframes sway-s{from{transform:translateX(-3px) rotate(-4deg)}to{transform:translateX(3px) rotate(4deg)}}
 
-.hello{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 20px 14vh;color:#fff6e6;pointer-events:none}
+.hello{inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 20px 14vh;pointer-events:none}
 .kicker{font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;opacity:.8;margin:0}
 h1{font-family:Fraunces,Georgia,serif;font-weight:800;font-size:clamp(4.2rem,22vw,9.5rem);line-height:1;margin:.12em 0 .1em;text-shadow:0 0 34px rgba(255,190,110,.55),0 2px 22px rgba(13,18,48,.6);opacity:0;animation:arrive 1.6s ease-out .2s forwards}
 .sub{font-family:Fraunces,Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(1.15rem,4.6vw,1.6rem);margin:0;text-shadow:0 1px 14px rgba(13,18,48,.75);opacity:0;animation:arrive 1.6s ease-out .9s forwards}
 @keyframes arrive{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.hint{position:absolute;left:0;right:0;bottom:calc(9vw + 34px);text-align:center;margin:0;padding:0 20px;font-size:.85rem;color:#fff6e6;text-shadow:0 1px 10px rgba(13,18,48,.8);pointer-events:none;transition:opacity .8s}
-.hills{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:max(9vw,54px);display:block;pointer-events:none}
+
+.say{left:50%;width:min(22em,100% - 48px);margin:0;transform:translate(-50%,-50%);text-align:center;pointer-events:none;
+  font-family:Fraunces,Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(1.45rem,5.6vw,2.3rem);line-height:1.3;text-shadow:0 1px 16px rgba(13,18,48,.85)}
+.say span{display:inline-block;opacity:0}
+#s1{top:48%}#s2,#s3{top:77%}
+
+.hint{left:0;right:0;bottom:calc(max(9vw,54px) + 14px);margin:0;text-align:center;font-size:.85rem;letter-spacing:.04em;text-shadow:0 1px 10px rgba(13,18,48,.8);pointer-events:none}
+.hint b{display:block;font-size:1.3rem;line-height:1;animation:nudge 1.8s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:none}50%{transform:translateY(6px)}}
+.hills{left:0;right:0;bottom:-1px;width:100%;height:max(9vw,54px);display:block;pointer-events:none}
 .hills .far{fill:#2a1e45;opacity:.55}.hills .near{fill:var(--bg)}
 
-/* Zettel */
-.letter{max-width:560px;margin:0 auto;padding:34px 20px 72px}
-.note{position:relative;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:40px 26px 28px;transform:rotate(-1.2deg);box-shadow:0 14px 34px var(--shadow);
-  background-image:repeating-linear-gradient(transparent 0 calc(1.6em - 1px),var(--line) calc(1.6em - 1px) 1.6em);background-position:0 46px;
-  opacity:0;translate:0 26px;transition:opacity 1s,translate 1s}
-.note.in{opacity:1;translate:0 0}
+.note{left:50%;top:45%;width:min(540px,100% - 40px);opacity:0;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:4px;padding:40px 26px 24px;box-shadow:0 18px 44px var(--shadow);cursor:default;pointer-events:none}
 .note::before{content:"";position:absolute;top:-13px;left:50%;width:108px;height:26px;margin-left:-54px;background:var(--tape);transform:rotate(2deg)}
-.note p{margin:0 0 1.6em}
-.note .first{font-family:Fraunces,Georgia,serif;font-style:italic;font-weight:500;font-size:1.25rem;line-height:1.28;color:var(--acc);margin-bottom:1.28em}
-.sign{font-family:Caveat,cursive;font-size:2.1rem;line-height:1.52;color:var(--acc);margin:0!important;text-align:right}
-.end{text-align:center;color:var(--mute);font-size:.92rem;margin:40px 0 0}
+.note p{margin:0 0 .9em}
+.sign{font-family:Caveat,cursive;font-size:2.2rem;line-height:1.3;color:var(--acc);margin:0!important;text-align:right;clip-path:inset(0 100% 0 0);padding-right:4px}
+.end{left:0;right:0;bottom:calc(max(9vw,54px) + 14px);margin:0;padding:0 24px;text-align:center;font-size:.92rem;opacity:0;color:#3a2a3c;pointer-events:none}
 
 @media(prefers-reduced-motion:reduce){
-  .lantern,.lantern i,.star{animation-play-state:paused}
+  .amb .lantern,.lantern i,.star,.hint b{animation-play-state:paused}
   h1,.sub{animation:none;opacity:1}
-  .note{transition:none}
 }
 </style>
 </head>
 <body>
-<header class="sky" id="sky">
-  <div class="hello">
+<div class="track" id="track">
+<div class="sky" id="sky">
+  <div class="dawn" id="dawn"></div>
+  <div class="stars" id="stars"></div>
+  <div class="amb" id="amb"></div>
+  <div class="heart" id="heart"></div>
+  <svg class="hills" id="hills" viewBox="0 0 1200 110" preserveAspectRatio="none" aria-hidden="true">
+    <path class="far" d="M0 70 C150 20 300 30 450 62 S760 96 930 48 S1130 30 1200 52 V110 H0Z"/>
+    <path class="near" d="M0 92 C200 50 380 60 560 84 S900 108 1200 64 V110 H0Z"/>
+  </svg>
+  <div class="hello" id="hello">
     <p class="kicker">Für alle, die mitgeschrieben haben</p>
     <h1>Danke</h1>
     <p class="sub">Deine Worte sind angekommen.</p>
   </div>
-  <p class="hint" id="hint">Tippe in den Himmel und lass ein Licht steigen.</p>
-  <svg class="hills" viewBox="0 0 1200 110" preserveAspectRatio="none" aria-hidden="true">
-    <path class="far" d="M0 70 C150 20 300 30 450 62 S760 96 930 48 S1130 30 1200 52 V110 H0Z"/>
-    <path class="near" d="M0 92 C200 50 380 60 560 84 S900 108 1200 64 V110 H0Z"/>
-  </svg>
-</header>
-
-<main class="letter">
+  <p class="say" id="s1">Du hast für einen Menschen geschrieben, den du nie gesehen hast.</p>
+  <p class="say" id="s2">Ich habe die Ermutigungen an meine Mitpatienten weitergegeben.</p>
+  <p class="say" id="s3">Einige von ihnen waren sehr berührt von dem, was sie gelesen haben.</p>
   <div class="note" id="note">
-    <p class="first">Du hast für einen Menschen geschrieben, den du nie gesehen hast.</p>
-    <p>Ich habe die Ermutigungen an meine Mitpatienten weitergegeben. Einige von ihnen waren sehr berührt von dem, was sie gelesen haben.</p>
     <p>Danke, dass du dir Zeit genommen, für eine fremde Person gebetet und aufgeschrieben hast, was dir für sie aufs Herz kam.</p>
-    <p class="sign">Daniel</p>
+    <p class="sign" id="sign">Daniel</p>
   </div>
-  <p class="end">Die Sammlung ist abgeschlossen. Es werden keine weiteren Worte mehr gebraucht.</p>
-</main>
+  <p class="end" id="end">Die Sammlung ist abgeschlossen. Es werden keine weiteren Worte mehr gebraucht.</p>
+  <p class="hint" id="hint">Scrolle langsam weiter<b>⌄</b></p>
+</div>
+</div>
 
 <script>
-const sky = document.getElementById('sky'), hint = document.getElementById('hint');
+const $ = id => document.getElementById(id), sky = $('sky');
 const rnd = (a, b) => a + Math.random() * (b - a);
-const still = matchMedia('(prefers-reduced-motion:reduce)').matches;
+const clamp = v => Math.max(0, Math.min(1, v));
+const seg = (p, a, b) => clamp((p - a) / (b - a));           // Anteil von p im Abschnitt a..b
+const ease = t => t * t * (3 - 2 * t);
+const N = 19;
 
 for(let i = 0; i < 70; i++){
   const s = document.createElement('span'); s.className = 'star';
   s.style.cssText = `left:${rnd(0,100)}%;top:${rnd(0,62)}%;--d:${rnd(2.5,6)}s;--t:-${rnd(0,6)}s`;
-  sky.prepend(s);
+  $('stars').append(s);
 }
+// Frei steigende Lichter (Hintergrund) und Lichter, die man durch Tippen steigen lässt
 function lantern(x, y){
   const tapped = y != null, depth = tapped ? 1 : Math.random(), d = rnd(26, 44) - depth * 8;
   const l = document.createElement('div'); l.className = 'lantern' + (tapped ? ' once' : '');
   l.style.cssText = `--x:${x};--s:${(.45 + depth * .75).toFixed(2)};--o:${(.5 + depth * .5).toFixed(2)};--b:${depth < .3 ? 1 : 0}px;--d:${tapped ? 14 : d}s;--t:${tapped ? 0 : -rnd(0, d)}s;--w:${rnd(3, 6)}s` + (tapped ? `;--y:${y}px` : '');
   l.innerHTML = '<i></i>';
   if(tapped) l.onanimationend = e => e.target === l && l.remove();
-  sky.insertBefore(l, sky.querySelector('.hello'));
+  $('amb').append(l);
 }
-for(let i = 0; i < 19; i++) lantern((i * 100 / 19 + rnd(0, 4)).toFixed(1) + '%');
-
-if(!still) sky.addEventListener('pointerdown', e => {
+for(let i = 0; i < N; i++) lantern((i * 100 / N + rnd(0, 4)).toFixed(1) + '%');
+sky.addEventListener('pointerdown', e => {
   const r = sky.getBoundingClientRect();
   lantern(e.clientX - r.left - 11 + 'px', e.clientY - r.top - 15);
-  hint.style.opacity = 0;
 });
-else hint.remove();
 
-new IntersectionObserver((es, o) => es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); o.disconnect() } }), {threshold: .2}).observe(document.getElementById('note'));
+// Lichter, die sich beim Scrollen zu einem Herz sammeln
+const hl = [];
+for(let i = 0; i < N; i++){
+  const t = (i + .5) / N * Math.PI * 2, l = document.createElement('div');
+  l.className = 'lantern'; l.style.cssText = `--w:${rnd(2.5, 5)}s;--t:-${rnd(0, 5)}s`; l.innerHTML = '<i></i>';
+  $('heart').append(l);
+  hl.push({l, hx: 16 * Math.sin(t) ** 3, hy: -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)),
+    sx: Math.random(), sy: rnd(60, 320), bend: rnd(-90, 90), order: Math.random(), up: rnd(.9, 1.5)});
+}
+
+// Sätze in einzelne Wörter zerlegen, damit sie Wort für Wort erscheinen
+const words = id => { const el = $(id); el.innerHTML = el.textContent.split(' ').map(w => `<span>${w}</span>`).join(' '); return [...el.children] };
+const say = (ws, tin, tout) => ws.forEach((w, i) => {
+  const o = clamp(tin * (ws.length + 2) - i) * (1 - tout);
+  w.style.opacity = o; w.style.transform = `translateY(${(1 - o) * 12}px)`;
+});
+const w1 = words('s1'), w2 = words('s2'), w3 = words('s3');
+
+let W, H, queued = false;
+function frame(){
+  queued = false;
+  const tr = $('track'), p = clamp(-tr.getBoundingClientRect().top / (tr.offsetHeight - H));
+
+  // 1 · Der Titel steigt weg, die Hügel sinken: wir heben ab in den Himmel
+  const out = ease(seg(p, .01, .11));
+  $('hello').style.opacity = 1 - out; $('hello').style.transform = `translateY(${-out * 90}px) scale(${1 + out * .12})`;
+  $('hint').style.opacity = 1 - seg(p, .005, .04);
+  const dawn = ease(seg(p, .76, .92));
+  $('hills').style.transform = `translateY(${(ease(seg(p, .02, .14)) - ease(seg(p, .80, .93))) * 101}%)`;
+
+  // 2 · Die Sätze erscheinen Wort für Wort
+  say(w1, seg(p, .10, .22), seg(p, .29, .34));
+  say(w2, seg(p, .38, .46), seg(p, .51, .55));
+  say(w3, seg(p, .56, .65), seg(p, .72, .77));
+
+  // 3 · Die Lichter sammeln sich zum Herz, später ziehen sie weiter nach oben
+  $('amb').style.opacity = 1 - .85 * ease(seg(p, .30, .42)) + .85 * ease(seg(p, .84, .96));
+  const k = Math.min(W * .36, H * .2) / 16, cx = W / 2, cy = H * .40;
+  for(const h of hl){
+    const a = h.order * .09, e = ease(seg(p, .33 + a, .50 + a)), away = ease(seg(p, .74 + h.order * .05, .92));
+    const x0 = h.sx * W, y0 = H + h.sy;
+    const x = x0 + (cx + h.hx * k - x0) * e + Math.sin(e * Math.PI) * h.bend;
+    const y = y0 + (cy + h.hy * k - y0) * e - away * H * h.up;
+    h.l.style.transform = `translate(${x}px,${y}px) scale(${.75 + .15 * e})`;
+    h.l.style.opacity = clamp(e * 4) * (1 - seg(p, .86, .93));
+  }
+
+  // 4 · Morgendämmerung, der Zettel kommt, die Unterschrift schreibt sich
+  $('dawn').style.opacity = dawn; $('stars').style.opacity = 1 - dawn;
+  const n = ease(seg(p, .82, .91));
+  $('note').style.opacity = clamp(n * 1.5);
+  $('note').style.transform = `translate(-50%,-50%) translateY(${(1 - n) * 90}px) rotate(${-1.2 - (1 - n) * 5}deg)`;
+  $('sign').style.clipPath = `inset(-8px calc(${100 - seg(p, .91, .96) * 100}% - 12px) -8px -8px)`;
+  $('end').style.opacity = seg(p, .95, .985);
+}
+const tick = () => { if(!queued){ queued = true; requestAnimationFrame(frame) } };
+const size = () => { W = sky.clientWidth; H = sky.clientHeight; tick() };
+addEventListener('scroll', tick, {passive: true}); addEventListener('resize', size); size();
 </script>
 </body>
 </html>
