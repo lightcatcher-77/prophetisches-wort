@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reserve-Worte</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@800&family=Nunito+Sans:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#faf7f2;--card:#fff;--ink:#2b2622;--mute:#7a6f65;--acc:#8a6a3d;--line:#e7dfd3;--btn:#fff;--err:#b3392f;--title:#1d4f91;--teal:#0b6e6e;--on-teal:#fff}
+@media(prefers-color-scheme:dark){:root{--bg:#1d1a17;--card:#27231f;--ink:#f1ebe2;--mute:#a89d90;--acc:#d2a967;--line:#3a342d;--btn:#1d1a17;--err:#e8786d;--title:#8ab4f8;--teal:#4fd1c5;--on-teal:#0f1f1e}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 'Nunito Sans',system-ui,sans-serif;min-height:100vh;display:flex;justify-content:center;padding:24px 16px}
+main{width:100%;max-width:560px}
+h1{font-family:Fraunces,Georgia,serif;color:var(--title);font-size:1.7rem;margin:.6em 0 .3em;font-weight:800;line-height:1.15}
+p{margin:.6em 0}.mute{color:var(--mute);font-size:.95rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin:18px 0}
+.person{font-size:1.35rem;color:var(--acc)}
+textarea{width:100%;min-height:200px;padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit;resize:vertical}
+button{font:inherit;padding:12px 20px;border-radius:10px;border:1px solid var(--teal);background:var(--teal);color:var(--on-teal);cursor:pointer;margin:6px 6px 0 0}
+button.sec{background:transparent;color:var(--teal)}
+button:disabled{opacity:.5}
+.err{color:var(--err)}.hidden{display:none}
+</style>
+</head>
+<body>
+<main>
+  <h1>Reserve-Worte</h1>
+  <p>Nur für Daniel. Hier trägst du Worte für Personen ein, die noch kein Wort von Freunden haben. Diese Worte werden nicht mitgezählt und sind nur eine Reserve. Du siehst nur das Geschlecht.</p>
+  <div id="app"></div>
+</main>
+<script>
+const $ = s => document.querySelector(s), app = $('#app');
+const store = {
+  get(){ try{ return JSON.parse(localStorage.getItem('pw_reserve')||'[]') }catch(e){ return [] } },
+  set(v){ try{ localStorage.setItem('pw_reserve', JSON.stringify(v)) }catch(e){} }
+};
+let mem = store.get(); // [{personId, beschreibung}]
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const api = async (p, o) => {
+  const r = await fetch(p, o); const d = await r.json();
+  if(!r.ok) throw new Error(d.error || 'Fehler'); return d;
+};
+const progress = async () => {
+  try{
+    const d = await api('/api/progress'), el = $('#prog');
+    if(el) el.textContent = `${d.ohneWort} Personen haben noch kein Wort von Freunden, bei ${d.mitReserve} davon ist schon ein Reserve-Wort eingetragen.`;
+  }catch(e){}
+};
+const busy = t => app.innerHTML = `<p class="mute">${t}</p>`;
+
+async function assign(){
+  busy('Person wird zugeteilt …');
+  try{
+    const d = await api('/api/assign?exclude=' + mem.map(m=>m.personId).join(','));
+    if(d.allDone) return menu('Für alle Personen ohne Wort ist schon ein Reserve-Wort eingetragen.');
+    write({personId:d.personId, beschreibung:d.beschreibung}, '', false);
+  }catch(e){ fail(e) }
+}
+function write(p, text, editing){
+  app.innerHTML = `<div class="card">
+    <p class="mute">Reserve-Wort für:</p>
+    <p class="person">${esc(p.beschreibung)}</p>
+    <textarea id="t" maxlength="400" placeholder="Was kommt dir für diese Person in den Sinn?">${esc(text)}</textarea>
+    <p class="mute" id="cnt" style="text-align:right">0 / 400 Zeichen</p>
+    <p id="msg" class="err"></p>
+    <button id="send">${editing?'Änderung speichern':'Speichern'}</button>
+    ${editing?'<button class="sec" id="back">Abbrechen</button>':''}
+  </div>`;
+  const upd=()=>$('#cnt').textContent=$('#t').value.length+' / 400 Zeichen';
+  $('#t').addEventListener('input',upd); upd();
+  $('#back')?.addEventListener('click', menu);
+  $('#send').onclick = async () => {
+    const t = $('#t').value.trim();
+    if(!t){ $('#msg').textContent='Bitte schreibe zuerst etwas auf.'; return }
+    $('#send').disabled = true;
+    try{
+      await api('/api/reserve/'+p.personId, {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({text:t})});
+      if(!mem.some(m=>m.personId===p.personId)){ mem.push({personId:p.personId, beschreibung:p.beschreibung}); store.set(mem); }
+      menu(editing?'Änderung gespeichert.':'Reserve-Wort gespeichert. 🙏');
+    }catch(e){ $('#msg').textContent = e.message; $('#send').disabled=false }
+  };
+}
+function menu(note){
+  app.innerHTML = `<div class="card">
+    ${typeof note==='string'?`<p class="person">${note}</p>`:''}
+    <p>Was möchtest du als Nächstes tun?</p>
+    <button id="more">Nächste Person zuteilen</button>
+    ${mem.length?'<button class="sec" id="edit">Ein Reserve-Wort bearbeiten</button>':''}
+    <p class="mute" id="prog"></p>
+  </div>`;
+  progress();
+  $('#more').onclick = assign;
+  $('#edit')?.addEventListener('click', list);
+}
+function list(){
+  app.innerHTML = `<div class="card"><p>Welches Reserve-Wort möchtest du bearbeiten?</p>` +
+    mem.map((m,i)=>`<button class="sec" data-i="${i}">${i+1}. ${esc(m.beschreibung)}</button>`).join('<br>') +
+    `<p><button class="sec" id="back">Zurück</button></p></div>`;
+  $('#back').onclick = menu;
+  app.querySelectorAll('[data-i]').forEach(b => b.onclick = async () => {
+    const m = mem[b.dataset.i]; busy('Lade …');
+    try{ const d = await api('/api/reserve/'+m.personId); write(m, d.text, true) }
+    catch(e){ fail(e) }
+  });
+}
+function fail(e){ app.innerHTML = `<div class="card"><p class="err">${esc(e.message)}</p><button id="r">Nochmal versuchen</button></div>`; $('#r').onclick = ()=>mem.length?menu():start() }
+function start(){ app.innerHTML = `<button id="go">Person zugeteilt bekommen</button>` + (mem.length?'<button class="sec" id="m">Meine Reserve-Worte</button>':'') + '<p class="mute" id="prog"></p>'; progress(); $('#go').onclick = assign; $('#m')?.addEventListener('click', menu) }
+start();
+</script>
+</body>
+</html>
