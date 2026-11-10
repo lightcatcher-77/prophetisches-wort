@@ -163,10 +163,14 @@ for(let i = 0; i < N; i++){
 
 // Sätze in einzelne Wörter zerlegen, damit sie Wort für Wort erscheinen
 const words = id => { const el = $(id); el.innerHTML = el.textContent.split(' ').map(w => `<span>${w}</span>`).join(' '); return [...el.children] };
-const say = (ws, tin, tout) => ws.forEach((w, i) => {
-  const o = clamp(tin * (ws.length + 2) - i) * (1 - tout);
-  w.style.opacity = o; w.style.transform = `translateY(${(1 - o) * 12}px)`;
-});
+const say = (ws, tin, tout) => {
+  // ganz ausblenden statt nur durchsichtig: manche Browser zeichnen sonst den Textschatten weiter
+  ws[0].parentNode.style.visibility = tin > 0 && tout < 1 ? 'visible' : 'hidden';
+  ws.forEach((w, i) => {
+    const o = clamp(tin * (ws.length + 2) - i) * (1 - tout);
+    w.style.opacity = o; w.style.transform = `translateY(${(1 - o) * 12}px)`;
+  });
+};
 const w1 = words('s1'), w2 = words('s2'), w3 = words('s3'), w4 = words('s4');
 
 let W, H, queued = false;
@@ -176,7 +180,7 @@ function frame(){
 
   // 1 · Der Titel steigt weg, die Hügel sinken: wir heben ab in den Himmel
   const out = ease(seg(p, .01, .09));
-  $('hello').style.opacity = 1 - out; $('hello').style.transform = `translateY(${-out * 90}px) scale(${1 + out * .12})`;
+  $('hello').style.opacity = 1 - out; $('hello').style.visibility = out < 1 ? 'visible' : 'hidden'; $('hello').style.transform = `translateY(${-out * 90}px) scale(${1 + out * .12})`;
   $('hint').style.opacity = 1 - seg(p, .005, .04);
   const dawn = ease(seg(p, .70, .86));
   const sink = ease(seg(p, .02, .11)) - ease(seg(p, .82, .92));
