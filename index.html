@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0d1230">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Fraunces:ital,wght@0,800;1,500&family=Nunito+Sans:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,800;1,500&family=Nunito+Sans:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#faf7f2;--card:#fffdf8;--ink:#2b2622;--acc:#8a6a3d;--line:#e7dfd3;--tape:rgba(214,178,110,.6);--shadow:rgba(40,25,30,.3)}
 @media(prefers-color-scheme:dark){:root{--bg:#1d1a17;--card:#2a2520;--ink:#f1ebe2;--acc:#d2a967;--line:#3a342d;--tape:rgba(210,169,103,.45);--shadow:rgba(0,0,0,.5)}}
@@ -16,7 +16,7 @@
 body{margin:0;background:#0d1230;color:#fff6e6;font:17px/1.6 'Nunito Sans',system-ui,sans-serif}
 
 /* .track gibt nur die Scrollstrecke vor, der Himmel steht fest und baut sich auf */
-.track{height:620vh}
+.track{height:800vh}
 .sky{position:fixed;inset:0;overflow:hidden;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;
   background:linear-gradient(180deg,#0d1230 0%,#1b2152 34%,#4a2f6b 60%,#a8506a 80%,#f0a868 96%)}
 .sky>*{position:absolute}
@@ -47,7 +47,8 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:800;font-size:clamp(4.2rem,22v
 .say{left:50%;width:min(22em,100% - 48px);margin:0;transform:translate(-50%,-50%);text-align:center;pointer-events:none;
   font-family:Fraunces,Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(1.45rem,5.6vw,2.3rem);line-height:1.3;text-shadow:0 1px 16px rgba(13,18,48,.85)}
 .say span{display:inline-block;opacity:0}
-#s1{top:48%}#s2,#s3{top:77%}
+#s1,#s4{top:48%}#s2,#s3{top:77%}
+#s2,#s3,#s4{font-size:clamp(1.25rem,4.9vw,2.1rem)}
 
 .hint{left:0;right:0;bottom:calc(max(9vw,54px) + 14px);margin:0;text-align:center;font-size:.85rem;letter-spacing:.04em;text-shadow:0 1px 10px rgba(13,18,48,.8);pointer-events:none}
 .hint small{display:block;margin-top:2px;font-size:.72rem;opacity:.6}
@@ -67,7 +68,7 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:800;font-size:clamp(4.2rem,22v
 .note{position:relative;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:4px;padding:40px 26px 24px;box-shadow:0 18px 44px var(--shadow);}
 .note::before{content:"";position:absolute;top:-13px;left:50%;width:108px;height:26px;margin-left:-54px;background:var(--tape);transform:rotate(2deg)}
 .note p{margin:0 0 .9em}
-.sign{font-family:Caveat,cursive;font-size:2.2rem;line-height:1.3;color:var(--acc);margin:0!important;text-align:right;clip-path:inset(0 100% 0 0);padding-right:4px}
+.sign{width:150px;aspect-ratio:600/254;margin:6px 0 0 auto;background:var(--acc);-webkit-mask:url(unterschrift.png) center/contain no-repeat;mask:url(unterschrift.png) center/contain no-repeat;clip-path:inset(0 100% 0 0)}
 .end{margin:22px 0 0;text-align:center;font-size:.92rem;opacity:0;color:#fff6e6;text-shadow:0 1px 10px rgba(50,30,60,.7)}
 
 @media(max-width:700px){.hint{bottom:calc(max(9vw,54px) + 150px)}}
@@ -102,17 +103,18 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:800;font-size:clamp(4.2rem,22v
     <path class="near" d="M0 92 C200 50 380 60 560 84 S900 108 1200 64 V110 H0Z"/>
   </svg>
   <div class="hello" id="hello">
-    <p class="kicker">Für alle, die mitgeschrieben haben</p>
+    <p class="kicker">An alle, die mitgeschrieben haben</p>
     <h1>Danke</h1>
     <p class="sub">Deine Worte sind angekommen.</p>
   </div>
-  <p class="say" id="s1">Du hast für einen Menschen geschrieben, den du nie gesehen hast.</p>
-  <p class="say" id="s2">Ich habe die Ermutigungen an meine Mitpatienten weitergegeben.</p>
-  <p class="say" id="s3">Einige von ihnen waren sehr berührt von dem, was sie gelesen haben.</p>
+  <p class="say" id="s1">Du hast für einen Menschen ermutigende Worte geschrieben, den du nie gesehen hast.</p>
+  <p class="say" id="s2">Einige Mitpatienten waren wirklich sehr berührt von den Worten, auch Nichtchristen waren überrascht davon, wie gut die Worte gepasst haben.</p>
+  <p class="say" id="s3">Hab Vertrauen, dass du mit deiner Ermutigung einen kleinen Samen im Herz eines Menschen gesät hast, der gerade eine schwere und intensive Zeit durchmacht.</p>
+  <p class="say" id="s4">Eines Tages wird dein Wort Frucht tragen, selbst wenn du es nicht erfahren wirst.</p>
   <div class="last" id="last">
   <div class="note" id="note">
     <p>Danke, dass du dir Zeit genommen, für eine fremde Person gebetet und aufgeschrieben hast, was dir für sie aufs Herz kam.</p>
-    <p class="sign" id="sign">Daniel</p>
+    <div class="sign" id="sign" role="img" aria-label="Unterschrift von Daniel"></div>
   </div>
   <p class="end" id="end">Die Sammlung ist abgeschlossen. Es werden keine weiteren Worte mehr gebraucht.</p>
   </div>
@@ -163,7 +165,7 @@ const say = (ws, tin, tout) => ws.forEach((w, i) => {
   const o = clamp(tin * (ws.length + 2) - i) * (1 - tout);
   w.style.opacity = o; w.style.transform = `translateY(${(1 - o) * 12}px)`;
 });
-const w1 = words('s1'), w2 = words('s2'), w3 = words('s3');
+const w1 = words('s1'), w2 = words('s2'), w3 = words('s3'), w4 = words('s4');
 
 let W, H, queued = false;
 function frame(){
@@ -171,39 +173,40 @@ function frame(){
   const p = clamp(scrollY / (document.documentElement.scrollHeight - innerHeight));
 
   // 1 · Der Titel steigt weg, die Hügel sinken: wir heben ab in den Himmel
-  const out = ease(seg(p, .01, .11));
+  const out = ease(seg(p, .01, .09));
   $('hello').style.opacity = 1 - out; $('hello').style.transform = `translateY(${-out * 90}px) scale(${1 + out * .12})`;
   $('hint').style.opacity = 1 - seg(p, .005, .04);
-  const dawn = ease(seg(p, .76, .92));
-  const sink = ease(seg(p, .02, .14)) - ease(seg(p, .80, .93));
+  const dawn = ease(seg(p, .70, .86));
+  const sink = ease(seg(p, .02, .11)) - ease(seg(p, .82, .92));
   $('hills').style.transform = `translateY(${sink * 101}%)`;
   $('mount').style.transform = `translateY(calc(${sink} * (100% + 14vh)))`;
 
   // 2 · Die Sätze erscheinen Wort für Wort
-  say(w1, seg(p, .10, .22), seg(p, .29, .34));
-  say(w2, seg(p, .38, .46), seg(p, .51, .55));
-  say(w3, seg(p, .56, .65), seg(p, .72, .77));
+  say(w1, seg(p, .08, .17), seg(p, .21, .25));
+  say(w2, seg(p, .28, .40), seg(p, .45, .49));
+  say(w3, seg(p, .50, .62), seg(p, .67, .71));
+  say(w4, seg(p, .72, .80), seg(p, .84, .88));
 
   // 3 · Die Lichter sammeln sich zum Herz, später ziehen sie weiter nach oben
-  $('amb').style.opacity = 1 - .85 * ease(seg(p, .30, .42)) + .85 * ease(seg(p, .84, .96));
+  $('amb').style.opacity = 1 - .85 * ease(seg(p, .22, .31)) + .85 * ease(seg(p, .84, .95));
   const k = Math.min(W * .36, H * .2) / 16, cx = W / 2, cy = H * .40;
   for(const h of hl){
-    const a = h.order * .09, e = ease(seg(p, .33 + a, .50 + a)), away = ease(seg(p, .74 + h.order * .05, .92));
+    const a = h.order * .07, e = ease(seg(p, .25 + a, .38 + a)), away = ease(seg(p, .68 + h.order * .05, .84));
     const x0 = h.sx * W, y0 = H + h.sy;
     const x = x0 + (cx + h.hx * k - x0) * e + Math.sin(e * Math.PI) * h.bend;
     const y = y0 + (cy + h.hy * k - y0) * e - away * H * h.up;
     h.l.style.transform = `translate(${x}px,${y}px) scale(${.75 + .15 * e})`;
-    h.l.style.opacity = clamp(e * 4) * (1 - seg(p, .86, .93));
+    h.l.style.opacity = clamp(e * 4) * (1 - seg(p, .79, .86));
   }
 
   // 4 · Morgendämmerung, der Zettel kommt, die Unterschrift schreibt sich
   $('dawn').style.opacity = dawn; $('stars').style.opacity = 1 - dawn;
-  const n = ease(seg(p, .82, .91));
+  const n = ease(seg(p, .87, .93));
   $('last').style.opacity = clamp(n * 1.5);
   $('last').style.transform = `translate(-50%,-50%) translateY(${(1 - n) * 90}px)`;
   $('note').style.transform = `rotate(${-1.2 - (1 - n) * 5}deg)`;
-  $('sign').style.clipPath = `inset(-8px calc(${100 - seg(p, .91, .96) * 100}% - 12px) -8px -8px)`;
-  $('end').style.opacity = seg(p, .95, .985);
+  $('sign').style.clipPath = `inset(0 ${100 - seg(p, .93, .965) * 100}% 0 0)`;
+  $('end').style.opacity = seg(p, .96, .99);
 }
 const tick = () => { if(!queued){ queued = true; requestAnimationFrame(frame) } };
 const size = () => { W = sky.clientWidth; H = sky.clientHeight; tick() };
