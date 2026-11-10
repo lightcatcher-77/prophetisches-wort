@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,800;1,500&family=Nunito+Sans:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#faf7f2;--card:#fffdf8;--ink:#2b2622;--acc:#8a6a3d;--line:#e7dfd3;--tape:rgba(214,178,110,.6);--shadow:rgba(40,25,30,.3)}
-@media(prefers-color-scheme:dark){:root{--bg:#1d1a17;--card:#2a2520;--ink:#f1ebe2;--acc:#d2a967;--line:#3a342d;--tape:rgba(210,169,103,.45);--shadow:rgba(0,0,0,.5)}}
+:root{--card:#fffdf8;--ink:#2b2622;--acc:#8a6a3d;--line:#e7dfd3;--tape:rgba(214,178,110,.6);--shadow:rgba(40,25,30,.3)}
+@media(prefers-color-scheme:dark){:root{--card:#2a2520;--ink:#f1ebe2;--acc:#d2a967;--line:#3a342d;--tape:rgba(210,169,103,.45);--shadow:rgba(0,0,0,.5)}}
 *{box-sizing:border-box}
 body{margin:0;background:#0d1230;color:#fff6e6;font:17px/1.6 'Nunito Sans',system-ui,sans-serif}
 
@@ -62,7 +62,7 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:800;font-size:clamp(4.2rem,22v
 @keyframes turn{to{transform:rotate(360deg)}}
 @keyframes shine{from{opacity:.65;transform:scale(.92)}to{opacity:1;transform:scale(1.06)}}
 .hills{left:0;right:0;bottom:-1px;width:100%;height:max(9vw,54px);display:block;pointer-events:none}
-.hills .far{fill:#2a1e45;opacity:.55}.hills .near{fill:var(--bg)}
+.hills .far{fill:#2a1e45;opacity:.55}.hills .near{fill:#171130}
 
 .last{left:50%;top:44%;width:min(540px,100% - 40px);opacity:0;pointer-events:none}
 .note{position:relative;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:4px;padding:40px 26px 24px;box-shadow:0 18px 44px var(--shadow);}
