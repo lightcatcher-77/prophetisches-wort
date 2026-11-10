@@ -24,5 +24,7 @@ Danke, dass du dir Zeit genommen, für eine fremde Person gebetet und aufgeschri
 
 Unterschrift: Daniels handschriftliche Unterschrift als Bild (`unterschrift.png`)
 
+Name unter der Unterschrift: Daniel
+
 ## Abschluss
 Die Sammlung ist abgeschlossen. Es werden keine weiteren Worte mehr gebraucht.
