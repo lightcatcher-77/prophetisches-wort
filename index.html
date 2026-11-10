@@ -15,9 +15,9 @@
 *{box-sizing:border-box}
 body{margin:0;background:#0d1230;color:#fff6e6;font:17px/1.6 'Nunito Sans',system-ui,sans-serif}
 
-/* Die Seite scrollt durch .track, der Himmel bleibt dabei stehen und baut sich auf */
+/* .track gibt nur die Scrollstrecke vor, der Himmel steht fest und baut sich auf */
 .track{height:620vh}
-.sky{position:sticky;top:0;height:100vh;height:100dvh;min-height:520px;overflow:hidden;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;
+.sky{position:fixed;inset:0;overflow:hidden;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;
   background:linear-gradient(180deg,#0d1230 0%,#1b2152 34%,#4a2f6b 60%,#a8506a 80%,#f0a868 96%)}
 .sky>*{position:absolute}
 .dawn{inset:0;opacity:0;background:linear-gradient(180deg,#33447f 0%,#7b6aa3 34%,#d98a8f 62%,#f6bd84 82%,#ffe2a8 100%)}
@@ -50,28 +50,51 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:800;font-size:clamp(4.2rem,22v
 #s1{top:48%}#s2,#s3{top:77%}
 
 .hint{left:0;right:0;bottom:calc(max(9vw,54px) + 14px);margin:0;text-align:center;font-size:.85rem;letter-spacing:.04em;text-shadow:0 1px 10px rgba(13,18,48,.8);pointer-events:none}
+.hint small{display:block;margin-top:2px;font-size:.72rem;opacity:.6}
 .hint b{display:block;font-size:1.3rem;line-height:1;animation:nudge 1.8s ease-in-out infinite}
 @keyframes nudge{0%,100%{transform:none}50%{transform:translateY(6px)}}
+.mount{right:7%;bottom:calc(max(9vw,54px)*.3);width:clamp(170px,27vw,340px);overflow:visible;pointer-events:none}
+.mount .rock{fill:#231a40}
+.mount .rays{transform-origin:150px 38px;animation:turn 90s linear infinite}
+.mount .glow{transform-origin:150px 38px;animation:shine 5s ease-in-out infinite alternate}
+.mount .cross{fill:#fff6dc;filter:drop-shadow(0 0 3px #ffe9b0) drop-shadow(0 0 9px rgba(255,205,120,.9))}
+@keyframes turn{to{transform:rotate(360deg)}}
+@keyframes shine{from{opacity:.65;transform:scale(.92)}to{opacity:1;transform:scale(1.06)}}
 .hills{left:0;right:0;bottom:-1px;width:100%;height:max(9vw,54px);display:block;pointer-events:none}
 .hills .far{fill:#2a1e45;opacity:.55}.hills .near{fill:var(--bg)}
 
-.note{left:50%;top:45%;width:min(540px,100% - 40px);opacity:0;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:4px;padding:40px 26px 24px;box-shadow:0 18px 44px var(--shadow);cursor:default;pointer-events:none}
+.last{left:50%;top:44%;width:min(540px,100% - 40px);opacity:0;pointer-events:none}
+.note{position:relative;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:4px;padding:40px 26px 24px;box-shadow:0 18px 44px var(--shadow);}
 .note::before{content:"";position:absolute;top:-13px;left:50%;width:108px;height:26px;margin-left:-54px;background:var(--tape);transform:rotate(2deg)}
 .note p{margin:0 0 .9em}
 .sign{font-family:Caveat,cursive;font-size:2.2rem;line-height:1.3;color:var(--acc);margin:0!important;text-align:right;clip-path:inset(0 100% 0 0);padding-right:4px}
-.end{left:0;right:0;bottom:calc(max(9vw,54px) + 14px);margin:0;padding:0 24px;text-align:center;font-size:.92rem;opacity:0;color:#3a2a3c;pointer-events:none}
+.end{margin:22px 0 0;text-align:center;font-size:.92rem;opacity:0;color:#fff6e6;text-shadow:0 1px 10px rgba(50,30,60,.7)}
 
+@media(max-width:700px){.hint{bottom:calc(max(9vw,54px) + 150px)}}
 @media(prefers-reduced-motion:reduce){
-  .amb .lantern,.lantern i,.star,.hint b{animation-play-state:paused}
+  .amb .lantern,.lantern i,.star,.hint b,.mount *{animation-play-state:paused}
   h1,.sub{animation:none;opacity:1}
 }
 </style>
 </head>
 <body>
-<div class="track" id="track">
+<div class="track"></div>
 <div class="sky" id="sky">
   <div class="dawn" id="dawn"></div>
   <div class="stars" id="stars"></div>
+  <svg class="mount" id="mount" viewBox="0 0 300 200" aria-hidden="true">
+    <defs>
+      <radialGradient id="halo"><stop offset="0" stop-color="#fff3cf" stop-opacity=".75"/><stop offset=".35" stop-color="#ffd58a" stop-opacity=".3"/><stop offset="1" stop-color="#ffd58a" stop-opacity="0"/></radialGradient>
+      <radialGradient id="fade"><stop offset=".15" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+      <mask id="raymask"><circle cx="150" cy="38" r="96" fill="url(#fade)"/></mask>
+    </defs>
+    <g class="glow">
+      <circle cx="150" cy="38" r="92" fill="url(#halo)"/>
+      <g mask="url(#raymask)"><circle class="rays" cx="150" cy="38" r="50" fill="none" stroke="#ffe6ae" stroke-opacity=".55" stroke-width="88" stroke-dasharray="2.6 23.58"/></g>
+    </g>
+    <path class="rock" d="M0 200 C42 192 72 162 100 130 C120 108 134 76 150 63 C167 75 178 104 200 127 C228 156 262 188 300 200Z"/>
+    <path class="cross" d="M147.6 14h4.8v11.5h9.6v4.8h-9.6V64h-4.8V30.3H138v-4.8h9.6z"/>
+  </svg>
   <div class="amb" id="amb"></div>
   <div class="heart" id="heart"></div>
   <svg class="hills" id="hills" viewBox="0 0 1200 110" preserveAspectRatio="none" aria-hidden="true">
@@ -86,13 +109,14 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:800;font-size:clamp(4.2rem,22v
   <p class="say" id="s1">Du hast für einen Menschen geschrieben, den du nie gesehen hast.</p>
   <p class="say" id="s2">Ich habe die Ermutigungen an meine Mitpatienten weitergegeben.</p>
   <p class="say" id="s3">Einige von ihnen waren sehr berührt von dem, was sie gelesen haben.</p>
+  <div class="last" id="last">
   <div class="note" id="note">
     <p>Danke, dass du dir Zeit genommen, für eine fremde Person gebetet und aufgeschrieben hast, was dir für sie aufs Herz kam.</p>
     <p class="sign" id="sign">Daniel</p>
   </div>
   <p class="end" id="end">Die Sammlung ist abgeschlossen. Es werden keine weiteren Worte mehr gebraucht.</p>
-  <p class="hint" id="hint">Scrolle langsam weiter<b>⌄</b></p>
-</div>
+  </div>
+  <p class="hint" id="hint">Scrolle langsam weiter<b>⌄</b><small>Tippen lässt ein Licht steigen</small></p>
 </div>
 
 <script>
@@ -144,14 +168,16 @@ const w1 = words('s1'), w2 = words('s2'), w3 = words('s3');
 let W, H, queued = false;
 function frame(){
   queued = false;
-  const tr = $('track'), p = clamp(-tr.getBoundingClientRect().top / (tr.offsetHeight - H));
+  const p = clamp(scrollY / (document.documentElement.scrollHeight - innerHeight));
 
   // 1 · Der Titel steigt weg, die Hügel sinken: wir heben ab in den Himmel
   const out = ease(seg(p, .01, .11));
   $('hello').style.opacity = 1 - out; $('hello').style.transform = `translateY(${-out * 90}px) scale(${1 + out * .12})`;
   $('hint').style.opacity = 1 - seg(p, .005, .04);
   const dawn = ease(seg(p, .76, .92));
-  $('hills').style.transform = `translateY(${(ease(seg(p, .02, .14)) - ease(seg(p, .80, .93))) * 101}%)`;
+  const sink = ease(seg(p, .02, .14)) - ease(seg(p, .80, .93));
+  $('hills').style.transform = `translateY(${sink * 101}%)`;
+  $('mount').style.transform = `translateY(calc(${sink} * (100% + 14vh)))`;
 
   // 2 · Die Sätze erscheinen Wort für Wort
   say(w1, seg(p, .10, .22), seg(p, .29, .34));
@@ -173,14 +199,15 @@ function frame(){
   // 4 · Morgendämmerung, der Zettel kommt, die Unterschrift schreibt sich
   $('dawn').style.opacity = dawn; $('stars').style.opacity = 1 - dawn;
   const n = ease(seg(p, .82, .91));
-  $('note').style.opacity = clamp(n * 1.5);
-  $('note').style.transform = `translate(-50%,-50%) translateY(${(1 - n) * 90}px) rotate(${-1.2 - (1 - n) * 5}deg)`;
+  $('last').style.opacity = clamp(n * 1.5);
+  $('last').style.transform = `translate(-50%,-50%) translateY(${(1 - n) * 90}px)`;
+  $('note').style.transform = `rotate(${-1.2 - (1 - n) * 5}deg)`;
   $('sign').style.clipPath = `inset(-8px calc(${100 - seg(p, .91, .96) * 100}% - 12px) -8px -8px)`;
   $('end').style.opacity = seg(p, .95, .985);
 }
 const tick = () => { if(!queued){ queued = true; requestAnimationFrame(frame) } };
 const size = () => { W = sky.clientWidth; H = sky.clientHeight; tick() };
-addEventListener('scroll', tick, {passive: true}); addEventListener('resize', size); size();
+addEventListener('scroll', tick, {passive: true}); new ResizeObserver(size).observe(sky); size();
 </script>
 </body>
 </html>

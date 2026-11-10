@@ -11,6 +11,7 @@ Danke für deine Worte
 - Große Überschrift: Danke
 - Unterzeile: Deine Worte sind angekommen.
 - Hinweis unten: Scrolle langsam weiter
+- Kleiner Hinweis darunter: Tippen lässt ein Licht steigen
 
 ## Sätze, die beim Scrollen nacheinander erscheinen
 1. Du hast für einen Menschen geschrieben, den du nie gesehen hast.
